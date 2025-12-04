@@ -1,60 +1,113 @@
-# SASPACer (latest version 0.3.6 on 16Oct2025)
-A SAS package to help creating SAS packages
+# corr (latest version 0.0.1 on 4Dec2025)
+A SAS package to provide macros for computing association measures between continuous, nominal, and ordinal variables. This package supports Pearson and Spearman correlations, Cramer's V, Somers' D, and Eta coefficient. Macro in the package outputs both long-format association tables and wide matrix-style datasets for further analysis. Includes a heatmap macro to visualize the strength and type of associations in a single plot. Tools for analysis or visualization related to correlation and association are to be added.  
 
-![logo](https://github.com/Nakaya-Ryo/SASPACer/blob/main/saspacer_logo_small.png)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/Nakaya-Ryo/SASPACer/blob/main/onigiri.png?raw=true" alt="onigiri" width="300"/>
+<img src="https://github.com/Nakaya-Ryo/corr/blob/main/corr.png?raw=true" alt="corr" width="300"/>
 
-**"サスパッカー"** in the logo stands for **SASPACer** in Japanese. The package is to help creating SAS packages. <br>Shaping onigiri(rice ball) by hands can be a bit challenging for beginners, but using onigiri mold makes it easy to form and provides a great introduction. Hope the mold(SASPACer) will help you to create your SAS package.
+Available macros for validations are as below.
+- %association_matrix	: To generate association matrix dataset (long, wide)    
+- %heatmap				: To generate heatmap    
+- %scatter_matrix		: To generate scatter matrix plot (Kernel, Bar, Scatter, Mosaic, Cross Table, Box)  
 
-## %ex2pac() : excel to package
-1. **Put information** of SAS package you want to create **into an excel spreadsheet** <br>(you can find template files in ./SASPACer/addcnt (simple_example.xlsx for simple example you can test as is, and template_package.xlsx for template contents for reference))
-![excel](./excel_image.png)
-2. %ex2pac() will convert the excel spreadsheet into SAS package structure(folders and files) and execute %generatePackage() (optional) for package zip file
+---
 
-Sample code:
+## %association_matrix
+
+### Purpose:
+    Creates a unified association matrix between variables of different types  
+    (continuous, nominal, ordinal).  
+    It calculates:
+    - Correlations for continuous + ordinal variables (PEARSON or SPEARMAN)  
+    - Cramer's V for nominal x nominal  (range 0 to 1)  
+    - Somers' D (C|R) for nominal x ordinal  (range -1 to 1)  
+    - Eta coefficient for nominal x continuous  (range 0 to 1)  
+    and combines them into a single "long" association dataset and a "wide" matrix.
+            
+### Parameters:
 ~~~sas
-%ex2pac(
-	excel_file=C:\Temp\template_package.xlsx,		/* Path of input excel file */
-	package_location=C:\Temp\SAS_PACKAGES\packages,		/* Output path */
-	complete_generation=Y)					/* Set Y(default) to execute %generagePackage() for completion */
+- `data` (required)  Input data set name.
+- `continuous` (optional) Space-separated list of continuous variables.
+- `nominal` (optional) Space-separated list of nominal (categorical) variables.
+- `ordinal` (optional) Space-separated list of ordinal variables.
+- `method` (optional, default = PEARSON)  
+    Correlation method used for continuous + ordinal part.  
+    - `PEARSON`  : Pearson correlation  
+    - `SPEARMAN` : Spearman correlation  
+- `out` (optional, default = association) Base name of output data sets.  
 ~~~
-This allows you to create SAS packages via simple format of excel!  
-You can learn from the following training materials by Bartosz Jablonski for source files and folders structure of SAS packages.  
-[My first SAS Package -a How To](https://github.com/yabwon/SAS_PACKAGES/blob/main/SPF/Documentation/SAS(r)%20packages%20-%20the%20way%20to%20share%20(a%20how%20to)-%20Paper%204725-2020%20-%20extended.pdf)   
-[SAS Packages - The Way To Share (a How To)](https://github.com/yabwon/SAS_PACKAGES/blob/main/SPF/Documentation/SAS(r)%20packages%20-%20the%20way%20to%20share%20(a%20how%20to)-%20Paper%204725-2020%20-%20extended.pdf)  
 
-## %pac2ex() : package to excel  
-It's very simple. You can convert package zip file into excel file with package information.   
-
-Sample code:
+### Example usage:
 ~~~sas
-%pac2ex(
-	zip_path=C:\Temp\packagename.zip,		/* Path of package zip file */
-	xls_path=C:\Temp\package_info.xlsx,		/* Output excel path */
-	overwrite=N,				/* Set N not to overwrite (default is Y) */
-	kill=Y)						/* Set Y to delete all datasets in PAC2EX lib in WORK (default is N) */
+%association_matrix(
+    data       = adsl,
+    continuous = AGE HEIGHT WEIGHT,
+    nominal    = SEX ARMCD,
+    ordinal    = VISITN,
+    method     = PEARSON,
+    out        = association_all
+)
 ~~~
 
-## Version history  
-0.3.6(16October2025) : Modified template_package.xlsx in addcnt to have template help   
-0.3.5(4October2025) : Added tests to source package and added test_example.xlsx in addcnt    
-0.3.4(2September2025) : Modified to allow at most 32bytes name of contents(macros) in %pac2ex  
-0.3.3(28August2025)	: Modified to allow not having license sheet in %ex2pac  
-0.3.2(26August2025)	: Minor updates in %pac2ex  
-0.3.1(26August2025)	: Polished overall codes. Added overwrite= argument in %pac2ex  
-0.3.0(18August2025)	: AdditionalContents(addcnt) was modified (changed folder name in excel from "macros" to "macro")  
-0.2.3(6August2025)	: AdditionalContents(addcnt) was modified  
-0.2.2(4August2025)	: Polished code in %ex2pac()  
-0.2.1(29July2025)	: Changed excel engine to xlsx engine in %pac2ex()  
-0.2.0(17July2025)	: Added %pac2ex()  
-0.1.1(9July2025)	: Minor updates in excel templates and cosmetic change in license(no change in contents)  
-0.1.0(29June2025)	: Modified logic (overwriting existing package folder -> Stop with error message to clear up the existing package folder(user should empty the existing folder first))  
-0.0.5(14June2025)	: easyArch=1 was set in %generatePackage() used in complete_generation=Y  
-0.0.4(29May2025)	: Codes were brushed up and enhanced documents  
-0.0.3(20April2025)	: Bugs fixed and enhanced documents (separated internal macros, fixed bugs, limitations and notes added)  
-0.0.2(20April2025)	: Minor updates  
-0.0.1(13April2025)	: Initial version
+## %heatmap
+
+### Purpose:
+    Generates a heatmap visualization of associations between variables.  
+    This macro first calls `%association_matrix` to compute all pairwise
+    associations (continuous, nominal, ordinal), then creates a heatmap plot
+    with annotated values.
+	
+<img src="https://github.com/Nakaya-Ryo/corr/blob/main/heatmap.png?raw=true" alt="heatmap" width="300"/>
+        
+### Parameters:
+~~~sas
+- `data` (required) Input dataset for association calculations.
+- `continuous` (optional) Space-separated list of continuous variables.
+- `nominal` (optional) Space-separated list of nominal variables.
+- `ordinal` (optional) Space-separated list of ordinal variables.
+- `method` (optional, default = PEARSON) Correlation method for continuous + ordinal vars.  
+- `text` (optional, default = Y)  Controls what text appears in each heatmap cell:  
+- `out` (optional, default = association) Base name of output datasets created by `%association_matrix`.
+~~~
+
+### Example usage:
+~~~sas
+%heatmap(
+    data         = adsl,
+    continuous   = AGE HEIGHT WEIGHT,
+    nominal      = SEX ARMCD,
+    ordinal      = VISITN,
+    method       = SPEARMAN,
+    text         = Y,
+    out          = association
+)
+~~~
+
+## %scatter_matrix
+
+### Purpose:
+	Macro `scatter_matrix` provides GTL-based graph or table generation for correlation or related visualizations.
+
+<img src="https://github.com/Nakaya-Ryo/corr/blob/main/scatter_matrix.png?raw=true" alt="scatter_matrix" width="300"/>
+
+### Parameters:
+~~~sas
+ - `data` (required) Input data set name  
+ - `continuous` (optional) Variable names for continuous measures with blank separated  
+ - `categorical` (optional) Variable names for categorical measures with blank separated  
+ - `group` (optional) A variable name for coloring scatter plots  
+~~~
+
+### Example usage:
+~~~sas
+%scatter_matrix(
+	data 		= adsl,
+	continuous 	= age weight,
+	categorical = sex,
+	group 		= race
+)
+~~~
+
+## Version history   
+0.0.1(4December2025)	: Initial version
 
 ---
 
