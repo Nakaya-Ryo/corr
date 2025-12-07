@@ -9,17 +9,17 @@
 ### Version information:
   
 - Package: corr
-- Version: 0.0.1
-- Generated: 2025-12-04T20:23:49
+- Version: 0.0.2
+- Generated: 2025-12-07T21:48:58
 - Author(s): Ryo Nakaya (nakaya.ryou@gmail.com)
 - Maintainer(s): Ryo Nakaya (nakaya.ryou@gmail.com)
 - License: MIT
-- File SHA256: `F*4DE287483B0F9FE4E456CF9746399DBCF95AEC8BFD7780457F01F7C3BF3C33E0` for this version
-- Content SHA256: `C*C129CE55E68005B7C4C276E656CB0D5DB1D9E9E9E1EE386B467CD3161E5B7C35` for this version
+- File SHA256: `F*7C4972E6295C76B039374C03719D6895038E0AC04B2DE58D263267DF0653F2FA` for this version
+- Content SHA256: `C*D05A70CDFFCEF138EB30A87596AAF779313444FA2519C8A8BA9A6663D75CFF4C` for this version
   
 ---
  
-# The `corr` package, version: `0.0.1`;
+# The `corr` package, version: `0.0.2`;
   
 ---
  
@@ -310,6 +310,12 @@ Latest udpate Date:     2025-12-04
     - `Y` ? Use formatted value text with marker 
     - `N` ? Use marker symbols only for non-correlation measures
 
+- `xreverse` (optional, default = N)  
+    Controls reverse of xaxis order    
+
+- `yreverse` (optional, default = Y)  
+    Controls reverse of yaxis order    
+
 - `out` (optional, default = association)  
     Base name of output datasets created by `%association_matrix`.
 
@@ -333,6 +339,8 @@ Latest udpate Date:     2025-12-04
     ordinal       = VISITN,
     method     = SPEARMAN,
     text         = Y,
+	xreverse   = N,
+    yreverse   = Y,
     out          = association
 );
 ~~~
@@ -345,7 +353,7 @@ https://github.com/Nakaya-Ryo/corr
 
 ---
 Author:                     Ryo Nakaya
-Latest update Date:     2025-12-01  
+Latest update Date:     2025-12-07  
 ---
 
   
