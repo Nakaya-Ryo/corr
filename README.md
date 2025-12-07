@@ -1,4 +1,4 @@
-# corr (latest version 0.0.1 on 4Dec2025)
+# corr (latest version 0.0.2 on 7Dec2025)
 A SAS package to provide macros for computing association measures between continuous, nominal, and ordinal variables. This package supports Pearson and Spearman correlations, Cramer's V, Somers' D, and Eta coefficient. Macro in the package outputs both long-format association tables and wide matrix-style datasets for further analysis. Includes a heatmap macro to visualize the strength and type of associations in a single plot. Tools for analysis or visualization related to correlation and association are to be added.  
 
 <img src="https://github.com/Nakaya-Ryo/corr/blob/main/corr.png?raw=true" alt="corr" width="300"/>
@@ -64,7 +64,9 @@ Available macros for validations are as below.
 - `nominal` (optional) Space-separated list of nominal variables.
 - `ordinal` (optional) Space-separated list of ordinal variables.
 - `method` (optional, default = PEARSON) Correlation method for continuous + ordinal vars.  
-- `text` (optional, default = Y)  Controls what text appears in each heatmap cell:  
+- `text` (optional, default = Y)  Controls what text appears in each heatmap cell.
+- `xreverse` (optional, default = N) Controls reverse of xaxis order    
+- `yreverse` (optional, default = Y) Controls reverse of yaxis order      
 - `out` (optional, default = association) Base name of output datasets created by `%association_matrix`.
 ~~~
 
@@ -77,6 +79,8 @@ Available macros for validations are as below.
     ordinal      = VISITN,
     method       = SPEARMAN,
     text         = Y,
+	xreverse     = N,
+	yreverse     = Y,
     out          = association
 )
 ~~~
@@ -107,6 +111,7 @@ Available macros for validations are as below.
 ~~~
 
 ## Version history   
+0.0.2(7December2025)	: Added xreverse and yreverse parameters in %heatmap()  
 0.0.1(4December2025)	: Initial version
 
 ---
