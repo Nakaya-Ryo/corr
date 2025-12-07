@@ -56,11 +56,14 @@ run;
     ordinal		= ordinal1,
     method		= spearman,
 	text			= Y,
+	xreverse     = N,
+	yreverse     = N,
     out			= test
 );
 
 /* Assert graph */
 %mp_assertgraph(
+  gpath1 = C:\Temp\SAS_PACKAGES\packages\corr\validation\previous\heatmap.png,
   gpath2 = C:\Temp\SAS_PACKAGES\packages\corr\validation\output\heatmap.png,
   desc   =  (%nrstr(%heatmap))[test01] Creating a heatmap with test data ,
   outds  = TEMP.corr_test

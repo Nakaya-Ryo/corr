@@ -1,7 +1,7 @@
 Type: Package
 Package: corr
 Title: Correlation and Association Analysis
-Version: 0.0.1
+Version: 0.0.2
 Author: Ryo Nakaya (nakaya.ryou@gmail.com)
 Maintainer: Ryo Nakaya (nakaya.ryou@gmail.com)
 License: MIT

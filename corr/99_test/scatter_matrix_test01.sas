@@ -72,6 +72,7 @@ run;
 
 /* Assert graph */
 %mp_assertgraph(
+  gpath1 = C:\Temp\SAS_PACKAGES\packages\corr\validation\previous\scatter_matrix.png,
   gpath2 = C:\Temp\SAS_PACKAGES\packages\corr\validation\output\scatter_matrix.png,
   desc   =  (%nrstr(%scatter_matrix))[test01] Creating a scatter_matrix plot with test data ,
   outds  = TEMP.corr_test

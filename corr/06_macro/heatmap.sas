@@ -32,6 +32,12 @@
     - `Y` ? Use formatted value text with marker 
     - `N` ? Use marker symbols only for non-correlation measures
 
+- `xreverse` (optional, default = N)  
+    Controls reverse of xaxis order    
+
+- `yreverse` (optional, default = Y)  
+    Controls reverse of yaxis order    
+
 - `out` (optional, default = association)  
     Base name of output datasets created by `%association_matrix`.
 
@@ -55,6 +61,8 @@
     ordinal       = VISITN,
     method     = SPEARMAN,
     text         = Y,
+	xreverse   = N,
+    yreverse   = Y,
     out          = association
 );
 ~~~
@@ -67,7 +75,7 @@ https://github.com/Nakaya-Ryo/corr
 
 ---
 Author:                     Ryo Nakaya
-Latest update Date:     2025-12-01  
+Latest update Date:     2025-12-07  
 ---
 
 *//*** HELP END ***/
@@ -79,6 +87,8 @@ Latest update Date:     2025-12-01
     ordinal=,   			
     method=pearson,
     text=Y,
+	xreverse=N,
+	yreverse=Y,
     out = association
 );
 
@@ -123,8 +133,8 @@ Latest update Date:     2025-12-01
 	    %end;
 
 	    gradlegend "heatmap_name" / title="Association";
-	    xaxis display=(nolabel);
-	    yaxis display=(nolabel);
+	    xaxis display=(nolabel) %if %upcase(&xreverse)=Y %then %do; reverse %end; ;
+	    yaxis display=(nolabel) %if %upcase(&yreverse)=Y %then %do; reverse %end; ;
 	run;
 	footnote ;
 
