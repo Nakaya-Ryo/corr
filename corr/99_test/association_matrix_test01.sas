@@ -15,14 +15,14 @@ data expected;
   input valuetxt $ txt $ var1 $ var2 $ type $ value;
   cards;
 1.0 . nominal1c nominal1c DIAG 1.0000
-0.62+ + nominal1c ordinal1 SOMERS_D 0.6190
+0.60* * nominal1c ordinal1 CRAMERS_V 0.6042
 0.46- - nominal1c x01 ETA 0.4573
-0.62+ + ordinal1 nominal1c SOMERS_D 0.6190
-1.00 . ordinal1 ordinal1 spearman 1.0000
-0.29 . ordinal1 x01 spearman 0.2913
+0.60* * ordinal1 nominal1c CRAMERS_V 0.6042
+1.00 . ordinal1 ordinal1 SPEARMAN 1.0000
+0.29 . ordinal1 x01 SPEARMAN 0.2913
 0.46- - x01 nominal1c ETA 0.4573
-0.29 . x01 ordinal1 spearman 0.2913
-1.00 . x01 x01 spearman 1.0000
+0.29 . x01 ordinal1 SPEARMAN 0.2913
+1.00 . x01 x01 SPEARMAN 1.0000
   ;
 run;
 

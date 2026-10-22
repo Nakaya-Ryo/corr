@@ -15,7 +15,7 @@
 
   general = %nrstr(
 Corr package provides macros for computing association measures between continuous, nominal,
-and ordinal variables. Supports Pearson and Spearman correlations, Cramer's V, Somers' D, and eta
+and ordinal variables. Supports Pearson and Spearman correlations, Cramer%'s V, and eta
 coefficients. Outputs both long-format association tables and wide matrix-style datasets for
 further analysis. Includes a heatmap macro to visualize the strength and type of associations in
 a single plot.
@@ -24,7 +24,7 @@ a single plot.
   requirements = %nrstr(
 - %association_matrix	:  ^{newline}
   To generate association matrix dataset (long, wide). Association matrix consists of correlation coefficients for
-  continuous/ordinal x continuous/ordinal, Cramer's V for nominal x nominal, Somer's D for nominal x ordinal,
+  continuous/ordinal x continuous/ordinal, Cramer%'s V for nominal x nominal and nominal x ordinal,
   Eta coefficients for nominal x continuous.   ^{newline}^{newline}
 - %heatmap :  ^{newline}
   To generate heatmap based on association matrix dataset created by %association_matrix within heatmap macro.  
