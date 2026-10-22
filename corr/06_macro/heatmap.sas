@@ -47,8 +47,7 @@
 - Wide-format association matrix `&out._wide`
 
 ### Display Conventions:
-- `*` for **Cramer's V**  (range 0 to 1)  
-- `+` for **Somers' D** (range -1 to 1)  
+- `*` for **Cramer's V**  (range 0 to 1; nominal x nominal / nominal x ordinal)  
 - `-` for **Eta (correlation ratio)**  (range 0 to 1)  
 - Numeric values printed when `text=Y`.
 
@@ -75,7 +74,7 @@ https://github.com/Nakaya-Ryo/corr
 
 ---
 Author:                     Ryo Nakaya
-Latest update Date:     2025-12-07  
+Latest update Date:     2026-10-22  
 ---
 
 *//*** HELP END ***/
@@ -118,7 +117,7 @@ Latest update Date:     2025-12-07
 	    colormodel3 = "red";
 	run;
 
-	footnote j=left "*: Cramer's V   +: Somers' D   -: Correlation ratio (Eta)";
+	footnote j=left "*: Cramer's V   -: Correlation ratio (Eta)";
 	proc sgplot data=&out. rattrmap=_rattr_corr;
 	    heatmapparm x=var1 y=var2 colorresponse=value /
 	        rattrid=CORRMAP

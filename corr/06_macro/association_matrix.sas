@@ -7,8 +7,7 @@
     (continuous, nominal, ordinal).  
     It calculates:
     - Correlations for continuous + ordinal variables (PEARSON or SPEARMAN)  
-    - Cramer's V for nominal x nominal  (range 0 to 1)  
-    - Somers' D (C|R) for nominal x ordinal  (range -1 to 1)  
+    - Cramer's V for nominal x nominal and nominal x ordinal (order ignored)  (range 0 to 1)  
     - Eta coefficient for nominal x continuous  (range 0 to 1)  
     and combines them into a single "long" association dataset and a "wide" matrix.
 
@@ -44,13 +43,11 @@
         - `type`         : association type  
             * `PEARSON` / `SPEARMAN` : correlation  
             * `CRAMERS_V`           : Cramer's V  
-            * `SOMERS_D`            : Somers' D (C|R)  
             * `ETA`                 : eta coefficient  
             * `DIAG`                : diagonal (self-association = 1)  
         - `valuetxt`     : formatted value with marker  
         - `txt`          : marker for plot/heatmap  
             * `*` : Cramer's V  
-            * `+` : Somers' D  
             * `-` : Eta  
             * ``(blank) : correlations
 
@@ -82,7 +79,7 @@ https://github.com/Nakaya-Ryo/corr
 
 ---
 Author:                     Ryo Nakaya
-Latest update Date:     2025-12-01  
+Latest update Date:     2026-10-22  
 ---
 
 *//*** HELP END ***/
@@ -125,7 +122,7 @@ Latest update Date:     2025-12-01
             do i = 1 to dim(vv);
                 var2 = vname(vv[i]);
                 value = vv[i];
-                type = "&method.";
+                type = upcase("&method.");
                 output;
             end;
             keep var1 var2 value type;
@@ -163,11 +160,11 @@ Latest update Date:     2025-12-01
                 /* v1 - v2 */
                 data _chisq2;
                     set _chisq;
-                    where Statistic = "Cramer";
+                    where index(Statistic,"Cramer") > 0;
                     length var1 var2 $32 type $10 value 8;
                     var1 = "&v1";
                     var2 = "&v2";
-                    value = Value;
+                    value = abs(Value);
                     type  = "CRAMERS_V";
                     keep var1 var2 value type;
                 run;
@@ -194,7 +191,7 @@ Latest update Date:     2025-12-01
     %end;
 
     /*================================*
-     * 3. Nominal x ordinal : Somers' D (C|R)
+     * 3. Nominal x ordinal : Cramer's V (order ignored)
      *================================*/
     %if %superq(ordinal)= %then %let n_ord = 0;
     %else %let n_ord = %sysfunc(countw(&ordinal));
@@ -211,21 +208,20 @@ Latest update Date:     2025-12-01
             %do j = 1 %to &n_ord;
                 %let v2 = %scan(&ordinal, &j);  /* col: ordinal */
 
-                ods output Measures=_measures;
+                ods output Chisq=_chisq;
                 proc freq data=&data;
-                    tables &v1 * &v2 / measures;
+                    tables &v1 * &v2 / chisq;
                 run;
                 ods output close;
 
                 data _measures2;
-                    set _measures;
-                    where index(Statistic,"Somer") > 0 
-                          and index(Statistic,"C|R") > 0;
-                    length var1 var2 $32 type $10;
-                    var1 = "&v1";   /* Nominal (R) */
-                    var2 = "&v2";   /* Ordinal (C) */
-                    value = Value;
-                    type  = "SOMERS_D";
+                    set _chisq;
+                    where index(Statistic,"Cramer") > 0;
+                    length var1 var2 $32 type $10 value 8;
+                    var1 = "&v1";   /* Nominal */
+                    var2 = "&v2";   /* Ordinal (order ignored) */
+                    value = abs(Value);
+                    type  = "CRAMERS_V";
                     keep var1 var2 value type;
                 run;
 
@@ -234,7 +230,7 @@ Latest update Date:     2025-12-01
                 run;
 
                 proc datasets nolist;
-                    delete _measures _measures2;
+                    delete _chisq _measures2;
                 run; quit;
             %end;
         %end;
@@ -357,8 +353,6 @@ Latest update Date:     2025-12-01
         select (type);
             when ("CRAMERS_V")
                 valuetxt = trim(left(cats(put(value, 5.2), '*')));
-            when ("SOMERS_D")
-                valuetxt = trim(left(cats(put(value, 5.2), '+')));
             when ("ETA")
                 valuetxt = trim(left(cats(put(value, 5.2), '-')));
             when ("DIAG")
@@ -369,7 +363,6 @@ Latest update Date:     2025-12-01
 
         select (type);
             when ("CRAMERS_V") txt = '*';
-            when ("SOMERS_D")  txt = '+';
             when ("ETA")       txt = '-';
             otherwise          txt = '';
         end;
