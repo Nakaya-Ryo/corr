@@ -1,7 +1,7 @@
 Type: Package
 Package: corr
 Title: Correlation and Association Analysis
-Version: 0.0.2
+Version: 0.0.3
 Author: Ryo Nakaya (nakaya.ryou@gmail.com)
 Maintainer: Ryo Nakaya (nakaya.ryou@gmail.com)
 License: MIT
@@ -11,7 +11,7 @@ ReqPackages:
 DESCRIPTION START: 
 
 Provides macros for computing association measures between continuous, nominal,
-and ordinal variables. Supports Pearson and Spearman correlations, Cramer's V, Somers' D, and Eta
+and ordinal variables. Supports Pearson and Spearman correlations, Cramer's V, and Eta
 coefficients. Outputs both long-format association tables and wide matrix-style datasets for
 further analysis. Includes a heatmap macro to visualize the strength and type of associations in
 a single plot. 
