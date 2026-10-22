@@ -1,5 +1,5 @@
-# corr (latest version 0.0.2 on 7Dec2025)
-A SAS package to provide macros for computing association measures between continuous, nominal, and ordinal variables. This package supports Pearson and Spearman correlations, Cramer's V, Somers' D, and Eta coefficient. Macro in the package outputs both long-format association tables and wide matrix-style datasets for further analysis. Includes a heatmap macro to visualize the strength and type of associations in a single plot. Tools for analysis or visualization related to correlation and association are to be added.  
+# corr (latest version 0.0.3 on 22October2026)
+A SAS package to provide macros for computing association measures between continuous, nominal, and ordinal variables. This package supports Pearson and Spearman correlations, Cramer's V and Eta coefficient. Macro in the package outputs both long-format association tables and wide matrix-style datasets for further analysis. Includes a heatmap macro to visualize the strength and type of associations in a single plot. Tools for analysis or visualization related to correlation and association are to be added.  
 
 <img src="https://github.com/Nakaya-Ryo/corr/blob/main/corr.png?raw=true" alt="corr" width="300"/>
 
@@ -17,8 +17,7 @@ Available macros for validations are as below.
     (continuous, nominal, ordinal).  
     It calculates:
     - Correlations for continuous + ordinal variables (PEARSON or SPEARMAN)  
-    - Cramer's V for nominal x nominal  (range 0 to 1)  
-    - Somers' D (C|R) for nominal x ordinal  (range -1 to 1)  
+    - Cramer's V for nominal x nominal and nominal x ordinal (range 0 to 1)  
     - Eta coefficient for nominal x continuous  (range 0 to 1)  
     and combines them into a single "long" association dataset and a "wide" matrix.
             
@@ -111,6 +110,7 @@ Available macros for validations are as below.
 ~~~
 
 ## Version history   
+0.0.3(22October2026)    : Modified from Somer's D to Cramer's V for nominal x ordinal  
 0.0.2(7December2025)	: Added xreverse and yreverse parameters in %heatmap()  
 0.0.1(4December2025)	: Initial version
 
